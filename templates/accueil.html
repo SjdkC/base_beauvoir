@@ -1,0 +1,16 @@
+{% extends "conteneur.html" %}
+{% block corps %}
+<h1>Bienvenue !</h1>
+    <p>
+        {% if livres %}
+        Il y a {{ livres|length }} oeuvres enregistrées. Voici la première : <i>{{livres[0].nom}}</i> de {{livres[0].auteur}}.
+            <ul>
+                {% for livre_id, livre in livres.items() %}
+                <li><a href="{{url_for('livre', book_id=livre_id)}}">{{livre.nom}}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+        La base de données est en cours de constitution
+        {% endif %}
+        </p>
+{% endblock %}

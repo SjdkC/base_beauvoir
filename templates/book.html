@@ -1,0 +1,21 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if livre %}| livre : {{livre.nom}} {% endif %}
+{% endblock %}
+
+{% block corps %}
+    {% if livre %}
+        <h1>{{livre.nom}}</h1>
+        <dl>
+            <dt>Auteur</dt><dd>{{livre.auteur}}</dd>
+            <dt>Data de l'oeuvre</dt><dd>{{livre.date}}</dd>
+            <dt>Type</dt><dd>{{livre.type}}</dd>
+            <dt>Domaine Dewey</dt><dd>{{livre.dewey}}</dd>
+            <dt>Description</dt><dd>{{livre.description}}</dd>
+        </dl>
+    {% else %}
+    <p>La base de données est en cours de constitution</p>
+    {% endif %}
+    <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+{% endblock %}
