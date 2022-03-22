@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `book` (
 	`book_id`	integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`book_nom`	TEXT NOT NULL,
 	`book_date`	NUMERIC NOT NULL,
-	`book_type`	TEXT NOT NULL,
+	`book_type`	VARCHAR ( 45 ) NOT NULL,
 	`book_description` TEXT,
 	FOREIGN KEY(book_type) REFERENCES type(type_id)
 );

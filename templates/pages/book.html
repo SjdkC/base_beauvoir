@@ -6,13 +6,11 @@
 
 {% block corps %}
     {% if livre %}
-        <h1>{{livre.nom}}</h1>
+        <h1>{{livre.book_nom}}</h1>
         <dl>
-            <dt>Auteur</dt><dd>{{livre.auteur}}</dd>
-            <dt>Data de l'oeuvre</dt><dd>{{livre.date}}</dd>
-            <dt>Type</dt><dd>{{livre.type}}</dd>
-            <dt>Domaine Dewey</dt><dd>{{livre.dewey}}</dd>
-            <dt>Description</dt><dd>{{livre.description}}</dd>
+            <dt>Date de l'oeuvre</dt><dd>{{livre.book_date}}</dd>
+            <dt>Type</dt><dd>{{livre.book_type}}</dd>
+            <dt>Description</dt><dd>{{livre.book_description}}</dd>
         </dl>
     {% else %}
     <p>La base de données est en cours de constitution</p>

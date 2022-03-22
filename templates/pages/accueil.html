@@ -3,10 +3,10 @@
 <h1>Bienvenue !</h1>
     <p>
         {% if livres %}
-        Il y a {{ livres|length }} oeuvres enregistrées. Voici la première : <i>{{livres[0].nom}}</i> de {{livres[0].auteur}}.
+        Il y a {{ livres|length }} oeuvres enregistrées.
             <ul>
-                {% for livre_id, livre in livres.items() %}
-                <li><a href="{{url_for('livre', book_id=livre_id)}}">{{livre.nom}}</a></li>
+                {% for livre in livres %}
+                <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
