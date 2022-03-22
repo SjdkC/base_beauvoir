@@ -1,0 +1,18 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}| {{titre}}{%endblock%}
+
+{% block corps %}
+
+{% include "partials/recherche.html" %}
+
+<h1>{{titre}}</h1>
+    {% if resultats %}
+    <p>Il y a {{resultats|length}} oeuvres qui répondent à votre requête :</p>
+        <ul>
+            {% for livre in resultats %}
+                <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
