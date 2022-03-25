@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     user_login = db.Column(db.String(45), unique=True, nullable=False)
     user_email = db.Column(db.Text, unique=True, nullable=False)
     user_password = db.Column(db.String(100), nullable=False)
+    authorships = db.relationship("Authorship", back_populates="user")
 
     @staticmethod
     def identification(login, motdepasse):
@@ -44,14 +45,21 @@ class User(UserMixin, db.Model):
         if not nom:
             erreurs.append("Le nom fourni est vide")
         if not motdepasse or len(motdepasse) < 6:
-            erreurs.append("Le mot de passe fourni est vide ou trop court")
+            erreurs.append("Le mot de passe fourni est vide ou trop court (votre mot de passe doit contenir au moins 6 caractères)")
 
         # On vérifie que personne n'a utilisé cet email ou ce login
-        uniques = User.query.filter(
-            db.or_(User.user_email == email, User.user_login == login)
+        unique_email = User.query.filter(
+            db.or_(User.user_email == email)
         ).count()
-        if uniques > 0:
-            erreurs.append("L'email ou le login sont déjà inscrits dans notre base de données")
+        if unique_email > 0:
+            erreurs.append("L'email est déjà inscrit dans notre base de données")
+
+        # On vérifie que personne n'a utilisé cet email ou ce login
+        unique_login = User.query.filter(
+            db.or_(User.user_login == login)
+        ).count()
+        if unique_login > 0:
+            erreurs.append("Le login est déjà inscrit dans notre base de données")
 
         # Si on a au moins une erreur
         if len(erreurs) > 0:
@@ -84,6 +92,17 @@ class User(UserMixin, db.Model):
         """
         return self.user_id
 
+    def to_jsonapi_dict(self):
+        """ It ressembles a little JSON API format but it is not completely compatible
+
+        :return:
+        """
+        return {
+            "type": "people",
+            "attributes": {
+                "name": self.user_nom
+            }
+        }
 
 @login.user_loader
 def trouver_utilisateur_via_id(identifiant):

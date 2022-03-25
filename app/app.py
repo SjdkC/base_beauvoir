@@ -18,10 +18,12 @@ app = Flask(
 app.config['SECRET_KEY'] = SECRET_KEY
 # On configure la base de données
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # On initie l'extension
 db = SQLAlchemy(app)
 
 # On met en place la gestion d'utilisateur-rice-s
 login = LoginManager(app)
 
-from . import routes
+from .routes import generic
+from .routes import api
