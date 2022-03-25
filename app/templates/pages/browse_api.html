@@ -1,0 +1,25 @@
+{% extends "conteneur.html" %}
+
+{% block corps %}
+
+    <h1>API</h1>
+
+    <p>Cette page vous permet d'interroger la base de données de l'application à l'aide d'une recherche
+        plein texte, afin d'obtenir un résultat au format JSON. Les résultats sont paginés : utilisez les liens contenus dans la clé "links" pour naviguer entre les pages.</p>
+<br/>
+
+          <h2>Recherche plein texte dans les titres d'oeuvres</h2>
+    <form class="form" method="GET" action="{{url_for('api_books_browse')}}">
+        <input type="search" name="q" class="form" type="text">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+<br/>
+
+        <h2>Recherche plein texte dans les descriptions d'oeuvres</h2>
+    <form class="form" method="GET" action="{{url_for('api_description_browse')}}">
+        <input type="search" name="q" class="form" type="text">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+{% endblock %}

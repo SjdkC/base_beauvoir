@@ -75,6 +75,28 @@ def browse():
         resultats=resultats
     )
 
+#Route donnant accès à la page de navigation dans l'API.
+#Sur celle-ci, trois formulaires permettent de requêter l'API pour la table amendes, personnes et sources.
+
+@app.route("/browse_api")
+def browse_api():
+
+    page = request.args.get("page", 1)
+
+    if isinstance(page, str) and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
+    resultats_books = Book.query.paginate(page=page, per_page=LIVRES_PAR_PAGE)
+    resultats_description = Book.query.paginate(page=page, per_page=LIVRES_PAR_PAGE)
+
+    return render_template(
+        "pages/browse_api.html",
+        resultats_books=resultats_books,
+        resultats_description=resultats_description
+    )
+
 @app.route("/register", methods=["GET", "POST"])
 def inscription():
     """ Route gérant les inscriptions
