@@ -189,7 +189,7 @@ def inscription():
             motdepasse=request.form.get("motdepasse", None)
         )
         if statut is True:
-            flash("Enregistrement effectué. Identifiez-vous maintenant", "success")
+            flash("Enregistrement effectué. Vous êtes maintenant connecté.e !", "success")
             return redirect("/")
         else:
             flash("Les erreurs suivantes ont été rencontrées : " + ", ".join(donnees), "error")

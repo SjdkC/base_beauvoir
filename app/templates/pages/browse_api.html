@@ -24,4 +24,13 @@
         <button type="submit" class="btn btn-primary">Rechercher</button>
     </form>
 
+<br/>
+       <h2>Recherche plein texte dans les auteur.rices</h2>
+    <form class="form" method="GET" action="{{url_for('api_writers_browse')}}">
+        <input type="search" name="q" class="form" type="text">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+
+
 {% endblock %}

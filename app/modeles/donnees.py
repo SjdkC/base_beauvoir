@@ -89,7 +89,7 @@ class Writer(db.Model):
             },
             "links": {
                 "self": url_for("auteur", writer_id=self.writer_id, _external=True),
-                "json": url_for("api_writers_single", writer_id=self.writer_id, _external=True)
+                "json": url_for("api_writers_browse", writer_id=self.writer_id, _external=True)
             },
             "relationships": {
                  "editions": [
