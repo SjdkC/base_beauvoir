@@ -1,0 +1,56 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if livre %}| Livre : {{livre.book_nom}} | Modification {% endif %}
+{% endblock %}
+
+{% block corps %}
+    {% if livre %}
+	<h1> Modification | {{livre.book_nom}} </h1>
+    {% if updated %}
+		<br/>
+    	<div class="alert alert-success">
+    		<p>Les modifications ont bien été prises en compte !</p>
+    	</div>
+    {% endif %}
+	{% if erreurs %}
+		<br/>
+    	<div class="alert alert-danger">
+    		<p>Au moins un champ obligatoire n'a pas été renseigné !</p>
+    	</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('book_update', book_id=livre.book_id)}}">
+		<br/>
+    	 <div class="mb-3">
+		    <label for="book_nom" class="form-label">Nom de l'oeuvre*</label>
+		    <input type="text" name="book_nom" class="form-control {% if 'book_nom' in erreurs%}is-invalid{% endif %}" id="book_nom" aria-describedby="book_nomHelp" value="{{livre.book_nom}}" />
+		  </div>
+    	 <div class="mb-3">
+		    <label for="book_date" class="form-label">Date de publication de l'oeuvre*</label>
+		    <input type="text" name="book_date" class="form-control {% if 'book_date' in erreurs%}is-invalid{% endif %}" id="book_date" value="{{livre.book_date}}" />
+         </div>
+        <div class="mb-3">
+		    <label for="type_nom" class="form-label {% if 'type_nom' in erreurs%}is-invalid{% endif %}">Genre littéraire*</label>
+		    <select name="type_nom" id="type_nom">
+		    	{% for type in types %}
+		    		<option value="{{type.type_nom}}" {% if type.type_nom == livre.book_type %}selected{% endif %}>
+			    		{{type.type_nom}}
+			    	</option>
+		    	{% endfor %}
+		    </select>
+		  </div>
+    	 <div class="mb-3">
+		    <label for="book_description" class="form-label">Description</label>
+		    <textarea name="book_description" class="form-control {% if 'book_description' in erreurs%}is-invalid{% endif %}" id="book_description">{{livre.book_description}}</textarea>
+		  </div>
+		* Champ obligatoire.
+		<br/>
+		<br/>
+		  <input type="submit" name="Modifier" class="btn btn-primary" />
+    </form>
+    {% else %}
+        <p>La base de données est en cours de constitution</p>
+    {% endif %}
+    <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+{% endblock %}

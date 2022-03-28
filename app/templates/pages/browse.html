@@ -6,7 +6,7 @@
 
     <h1>Navigation</h1>
     {% if resultats %}
-        <p>Il y a {{resultats.total}} oeuvres qui répondent à votre requête :</p>
+        <p>Il y a {{resultats.total}} oeuvres inscrites en base :</p>
         <ul>
             {% for livre in resultats.items %}
                 <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>

@@ -1,9 +1,9 @@
 from flask import render_template, request, flash, redirect
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 
-from ..app import app, login
+from ..app import app, login, db
 from ..constantes import LIVRES_PAR_PAGE
-from ..modeles.donnees import Book
+from ..modeles.donnees import Book, Authorship, Type
 from ..modeles.utilisateurs import User
 
 @app.route("/")
@@ -21,6 +21,56 @@ def livre(book_id):
     """
     unique_livre = Book.query.get(book_id)
     return render_template("pages/book.html", nom="Base Beauvoir", livre=unique_livre)
+
+
+@app.route("/book/<int:book_id>/update", methods=["GET", "POST"])
+@login_required
+def book_update(book_id):
+    """ Route permettant la modification des données d'une oeuvre
+
+    :param book_id: Identifiant numérique de l'oeuvre
+    """
+
+    mon_livre = Book.query.get_or_404(book_id)
+    book_types = Type.query.all()
+
+    erreurs = []
+    updated = False
+
+    if request.method == "POST":
+        # J"ai un formulaire
+        if not request.form.get("book_nom", "").strip():
+            erreurs.append("Veuillez renseigner le nom de l'oeuvre.")
+        if not request.form.get("book_date", "").strip():
+            erreurs.append("Veuillez renseigner la date de l'oeuvre.")
+
+        if not request.form.get("type_nom", "").strip():
+            erreurs.append("Veuillez renseigner le genre de l'oeuvre.")
+        elif not Type.query.get(request.form["type_nom"]):
+            erreurs.append("Veuillez renseigner le nom de l'oeuvre.")
+
+        if not erreurs:
+            print("Faire ma modifications")
+            mon_livre.book_nom = request.form["book_nom"]
+            mon_livre.book_date = request.form["book_date"]
+            mon_livre.book_description = request.form["book_description"]
+            mon_livre.place_type = request.form["type_nom"]
+            # J'utilise la relationship
+            #mon_livre.book_type = Type.query.get(request.form["type_nom"])
+
+            db.session.add(mon_livre)
+            db.session.add(Authorship(book=mon_livre, user=current_user))
+            db.session.commit()
+            updated = True
+
+    return render_template(
+        "pages/book_form_update.html",
+        nom="Base Beauvoir",
+        livre=mon_livre,
+        types=book_types,
+        erreurs=erreurs,
+        updated=updated
+    )
 
 @app.route("/recherche")
 def recherche():
