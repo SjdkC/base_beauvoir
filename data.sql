@@ -51,8 +51,8 @@ DROP TABLE IF EXISTS `authorship`;
 CREATE TABLE IF NOT EXISTS `authorship` (
 	`authorship_id`	integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`authorship_user_id`	integer NOT NULL,
-	`authorship_book_id`	integer NOT NULL,
-	`authorship_writer_id`	integer NOT NULL,
+	`authorship_book_id`	integer,
+	`authorship_writer_id`	integer,
 	`authorship_date`	DATETIME DEFAULT current_timestamp,
 	FOREIGN KEY(authorship_user_id) REFERENCES user(user_id),
 	FOREIGN KEY(authorship_writer_id) REFERENCES writer(writer_id),
