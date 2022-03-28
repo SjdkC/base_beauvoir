@@ -1,15 +1,15 @@
 {% extends "conteneur.html" %}
 
-{% block titre %}| Index des oeuvres : Page {{resultats.page}}{%endblock%}
+{% block titre %}| Index des auteur.rices : Page {{resultats.page}}{%endblock%}
 
 {% block corps %}
 
-    <h1>Index des oeuvres</h1>
+    <h1>Index des auteurs</h1>
     {% if resultats %}
-        <p>Il y a {{resultats.total}} oeuvres inscrites en base :</p>
+        <p>Il y a {{resultats.total}} auteur.rices inscrit.es en base :</p>
         <ul>
-            {% for livre in resultats.items %}
-                <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>
+            {% for auteur in resultats.items %}
+                <li><a href="{{url_for('auteur', writer_id=auteur.writer_id)}}">{{auteur.writer_prenom}} {{auteur.writer_nom}}</a></li>
             {% endfor %}
         </ul>
     <nav aria-label="research-pagination">
@@ -18,7 +18,7 @@
             {% if page %}
               {% if page != resultats.page %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ url_for("browse", page=page) }}">{{page}}</a>
+                    <a class="page-link" href="{{ url_for("browse_writers", page=page) }}">{{page}}</a>
                 </li>
               {% else %}
                 <li class="page-item active disabled">

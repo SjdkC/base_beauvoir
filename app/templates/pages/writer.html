@@ -1,0 +1,34 @@
+{% extends "conteneur.html" %}
+
+{% block titre %}
+    {%if auteur %}| Auteur : {{auteur.writer_nom}} {% endif %}
+{% endblock %}
+
+{% block corps %}
+    {% if auteur %}
+        <h1>{{auteur.writer_nom}} {{auteur.writer_prenom}}</h1>
+
+        <dl>
+            <dt>Date de naissance</dt><dd>{{auteur.writer_naissance}}</dd>
+            <dt>Date de mort</dt><dd>{{auteur.writer_mort}}</dd>
+            <dt>URI</dt><dd>{{auteur.writer_sameas}}</dd>
+            <dt>Description</dt><dd>{{auteur.writer_description}}</dd>
+            <br/>
+            <dt>Historique des modifications</dt>
+            {% if auteur.authorships %}
+            <dd>
+                <ul>
+                    {% for modification in auteur.authorships %}
+                        <li>[{{modification.authorship_date}}] {{modification.user.user_nom}}</li>
+                    {% endfor %}
+                </ul>
+            </dd>
+            {% else %}
+                    Cette notice n'a pas subi de modifications.
+            {% endif %}
+        </dl>
+    {% else %}
+    <p>La base de données est en cours de constitution</p>
+    {% endif %}
+    <p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+{% endblock %}

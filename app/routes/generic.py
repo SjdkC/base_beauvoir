@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from ..app import app, login, db
 from ..constantes import LIVRES_PAR_PAGE
-from ..modeles.donnees import Book, Authorship, Type
+from ..modeles.donnees import Book, Authorship, Type, Writer
 from ..modeles.utilisateurs import User
 
 @app.route("/")
@@ -12,6 +12,15 @@ def accueil():
     """
     livres = Book.query.order_by(Book.book_id.desc()).limit(5).all()
     return render_template("pages/accueil.html", nom="Base Beauvoir", livres=livres)
+
+@app.route("/writer/<int:writer_id>")
+def auteur(writer_id):
+    """ Route permettant l'affichage des données d'un auteur
+
+    :param writer_id: Identifiant numérique de l'auteur
+    """
+    unique_auteur = Writer.query.get(writer_id)
+    return render_template("pages/writer.html", nom="Base Beauvoir", auteur=unique_auteur)
 
 @app.route("/book/<int:book_id>")
 def livre(book_id):
@@ -122,6 +131,26 @@ def browse():
 
     return render_template(
         "pages/browse.html",
+        resultats=resultats
+    )
+
+@app.route("/writers")
+def browse_writers():
+    """ Route permettant la recherche plein-texte
+    """
+    # On préfèrera l'utilisation de .get() ici
+    #   qui nous permet d'éviter un if long (if "clef" in dictionnaire and dictonnaire["clef"])
+    page = request.args.get("page", 1)
+
+    if isinstance(page, str) and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
+    resultats = Writer.query.paginate(page=page, per_page=LIVRES_PAR_PAGE)
+
+    return render_template(
+        "pages/browse_writers.html",
         resultats=resultats
     )
 
