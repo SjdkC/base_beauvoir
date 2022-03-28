@@ -54,7 +54,7 @@ def book_update(book_id):
             mon_livre.book_nom = request.form["book_nom"]
             mon_livre.book_date = request.form["book_date"]
             mon_livre.book_description = request.form["book_description"]
-            mon_livre.place_type = request.form["type_nom"]
+            mon_livre.book_type = request.form["type_nom"]
             # J'utilise la relationship
             #mon_livre.book_type = Type.query.get(request.form["type_nom"])
 
