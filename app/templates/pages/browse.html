@@ -9,7 +9,7 @@
         <p>Il y a {{resultats.total}} oeuvres inscrites en base :</p>
         <ul>
             {% for livre in resultats.items %}
-                <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>
+                <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a>, {{livre.book_date}}</li>
             {% endfor %}
         </ul>
     <nav aria-label="research-pagination">

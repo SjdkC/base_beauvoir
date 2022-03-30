@@ -1,6 +1,6 @@
 from warnings import warn
 
-LIVRES_PAR_PAGE = 5
+LIVRES_PAR_PAGE = 10
 
 SECRET_KEY = "JE SUIS UN SECRET !"
 API_ROUTE = "/api"
