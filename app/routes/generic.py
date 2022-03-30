@@ -79,6 +79,36 @@ def book_update(book_id):
         updated=updated
     )
 
+@app.route("/simone_de_beauvoir/update", methods=["GET", "POST"])
+@login_required
+def simone_de_beauvoir_update():
+    """ Route permettant la modification des données de la page Simone de Beauvoir
+    """
+
+    mon_autrice = Writer.query.get_or_404(0)
+
+    erreurs = []
+    updated = False
+
+    if request.method == "POST":
+        # J"ai un formulaire
+
+            print("Faire ma modifications")
+            mon_autrice.writer_description = request.form["writer_description"]
+
+            db.session.add(mon_autrice)
+            db.session.add(Authorship(writer=mon_autrice, user=current_user))
+            db.session.commit()
+            updated = True
+
+    return render_template(
+        "pages/simone_de_beauvoir_update.html",
+        nom="Base Beauvoir",
+        auteur=mon_autrice,
+        erreurs=erreurs,
+        updated=updated
+    )
+
 @app.route("/recherche")
 def recherche():
     """ Route permettant la recherche plein-texte
