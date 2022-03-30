@@ -35,6 +35,61 @@ class Book(db.Model):
     authorships = db.relationship("Authorship", back_populates="book")
     has_type = db.relationship("Type", back_populates="boook")
 
+    # Méthode statique qui permet d'ajouter une amende à la BDD. Elle est appelée dans la route correspondante.
+
+    @staticmethod
+    def ajout_book(ajout_book_id, ajout_book_nom, ajout_book_date, ajout_book_type,
+                     ajout_book_description):
+        erreurs = []
+        if not ajout_book_id:
+            erreurs.append("Veuillez renseigner l'ID de cette oeuvre.")
+        if not ajout_book_nom:
+            erreurs.append(
+                "Veuillez renseigner le nom de cette oeuvre.")
+        if not ajout_book_date:
+            erreurs.append(
+                "Veuillez renseigner la date de publication de cette oeuvre.")
+        if not ajout_book_type:
+            erreurs.append(
+                "Veuillez renseigner le genre littéraire de cette oeuvre.")
+
+            # S'il y a au moins une erreur, afficher un message d'erreur.
+        if len(erreurs) > 0:
+            return False, erreurs
+
+            # Création de la nouvelle oeuvre
+        nouvelle_oeuvre = Book(book_id=ajout_book_id,
+                                  book_nom=ajout_book_nom,
+                                  book_date=ajout_book_date,
+                                  book_type=ajout_book_type,
+                                  book_description=ajout_book_description)
+
+        # Tentative d'ajout qui sera stoppée si une erreur apparaît.
+        try:
+            db.session.add(nouvelle_oeuvre)
+            db.session.commit()
+            return True, nouvelle_oeuvre
+
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+
+    # Méthode statique permettant de supprimer une oeuvre
+    @staticmethod
+    def supprimer_book(book_id):
+
+        suppr_book = Book.query.get(book_id)
+        book_types = Type.query.all()
+
+        try:
+            db.session.delete(suppr_book)
+            db.session.commit()
+            return True
+
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+    #prépare le format JSON pour l'API
     def to_jsonapi_dict(self):
         """ It ressembles a little JSON API format but it is not completely compatible
 

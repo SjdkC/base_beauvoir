@@ -163,7 +163,6 @@ def browse():
     )
 
 #Route donnant accès à la page de navigation dans l'API.
-#Sur celle-ci, trois formulaires permettent de requêter l'API pour la table amendes, personnes et sources.
 
 @app.route("/browse_api")
 def browse_api():
@@ -236,3 +235,44 @@ def deconnexion():
         logout_user()
     flash("Vous êtes déconnecté-e", "info")
     return redirect("/")
+
+@app.route("/new_book", methods=["GET", "POST"])
+@login_required
+def new_book():
+    if request.method == "POST":
+        statut, informations = Book.ajout_book(
+        ajout_book_id = request.form.get("ajout_book_id", None),
+        ajout_book_nom = request.form.get("ajout_book_nom", None),
+        ajout_book_date = request.form.get("ajout_book_date", None),
+        ajout_book_type = request.form.get("ajout_book_type", None),
+        ajout_book_description= request.form.get("ajout_book_description", None)
+        )
+
+        if statut is True:
+            flash("L'oeuvre a bien été ajoutée à la base de données !", "success")
+            return redirect("/")
+        else:
+            flash("L'ajout a échoué pour les raisons suivantes : " + " ".join(informations), "danger")
+            return render_template("pages/new_book.html")
+    else:
+        return render_template("pages/new_book.html")
+
+@app.route("/suppress_book/<int:book_id>", methods=["POST", "GET"])
+@login_required
+def suppress_book(book_id):
+
+    suppr_book = Book.query.get(book_id)
+
+    if request.method == "POST":
+        statut = Book.supprimer_book(
+            book_id=book_id
+        )
+
+        if statut is True:
+            flash("Suppression réussie", "success")
+            return redirect("/")
+        else:
+            flash("La suppression a échoué. Réessayez !", "error")
+            return redirect("/")
+    else:
+        return render_template("pages/suppress_book.html", suppr_book=suppr_book)
