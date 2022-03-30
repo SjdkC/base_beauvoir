@@ -20,7 +20,6 @@ def api_books_single(book_id):
     except:
         return Json_404()
 
-
 @app.route(API_ROUTE+"/books")
 def api_books_browse():
     """ Route permettant la recherche plein-texte dans les noms de livres
@@ -133,58 +132,3 @@ def api_description_browse():
     response = jsonify(dict_resultats)
     return response
 
-@app.route(API_ROUTE+"/writers")
-def api_writers_browse():
-    """ Route permettant la recherche plein-texte dans les noms d'auteurs
-
-    On s'inspirera de http://jsonapi.org/ faute de pouvoir trouver temps d'y coller à 100%
-    """
-    # q est très souvent utilisé pour indiquer une capacité de recherche
-    motclef = request.args.get("q", None)
-    page = request.args.get("page", 1)
-
-    if isinstance(page, str) and page.isdigit():
-        page = int(page)
-    else:
-        page = 1
-
-    if motclef:
-        query = Writer.query.filter(
-            Writer.writer_nom.like("%{}%".format(motclef))
-        )
-    else:
-        query = Writer.query
-
-    try:
-        resultats = query.paginate(page=page, per_page=LIVRES_PAR_PAGE)
-    except Exception:
-        return Json_404()
-
-    dict_resultats = {
-        "links": {
-            "self": request.url
-        },
-        "data": [
-            writer.writer_to_jsonapi()
-            for writer in resultats.items
-        ]
-    }
-
-    if resultats.has_next:
-        arguments = {
-            "page": resultats.next_num
-        }
-        if motclef:
-            arguments["q"] = motclef
-        dict_resultats["links"]["next"] = url_for("api_writers_browse", _external=True)+"?"+urlencode(arguments)
-
-    if resultats.has_prev:
-        arguments = {
-            "page": resultats.prev_num
-        }
-        if motclef:
-            arguments["q"] = motclef
-        dict_resultats["links"]["prev"] = url_for("api_writers_browse", _external=True)+"?"+urlencode(arguments)
-
-    response = jsonify(dict_resultats)
-    return response
