@@ -241,12 +241,12 @@ def deconnexion():
 def new_book():
     if request.method == "POST":
         statut, informations = Book.ajout_book(
-        ajout_book_id = request.form.get("ajout_book_id", None),
-        ajout_book_nom = request.form.get("ajout_book_nom", None),
-        ajout_book_date = request.form.get("ajout_book_date", None),
-        ajout_book_type = request.form.get("ajout_book_type", None),
-        ajout_book_description= request.form.get("ajout_book_description", None)
-        )
+            ajout_book_id = request.form.get("ajout_book_id", None),
+            ajout_book_nom = request.form.get("ajout_book_nom", None),
+            ajout_book_date = request.form.get("ajout_book_date", None),
+            ajout_book_type = request.form.get("ajout_book_type", None),
+            ajout_book_description= request.form.get("ajout_book_description", None)
+            )
 
         if statut is True:
             flash("L'oeuvre a bien été ajoutée à la base de données !", "success")

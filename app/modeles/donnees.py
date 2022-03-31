@@ -21,6 +21,8 @@ class Authorship(db.Model):
             "on": self.authorship_date
         }
 
+
+
 class Type(db.Model):
     type_nom = db.Column(db.Text, unique=True, nullable=False, primary_key=True)
     boook = db.relationship("Book", back_populates="has_type")
@@ -41,14 +43,15 @@ class Book(db.Model):
     def ajout_book(ajout_book_id, ajout_book_nom, ajout_book_date, ajout_book_type,
                      ajout_book_description):
         erreurs = []
-        if not ajout_book_id:
-            erreurs.append("Veuillez renseigner l'ID de cette oeuvre.")
         if not ajout_book_nom:
             erreurs.append(
                 "Veuillez renseigner le nom de cette oeuvre.")
         if not ajout_book_date:
             erreurs.append(
                 "Veuillez renseigner la date de publication de cette oeuvre.")
+        if len(ajout_book_date) != 4:
+            erreurs.append(
+                "Bon...")
         if not ajout_book_type:
             erreurs.append(
                 "Veuillez renseigner le genre littéraire de cette oeuvre.")
@@ -79,7 +82,6 @@ class Book(db.Model):
     def supprimer_book(book_id):
 
         suppr_book = Book.query.get(book_id)
-        book_types = Type.query.all()
 
         try:
             db.session.delete(suppr_book)

@@ -8,26 +8,26 @@
 <form class="form" method="POST" action="{{url_for('new_book')}}">
     <br/>
     <div class="mb-3">
-      <label for="ajout_book_id" class="form-label">Identifiant de l'amende*</label>
-        <input type="text" class="form-control" name="ajout_book_id" placeholder="ID de l'oeuvre"/>
+      <label for="ajout_book_id" class="form-label">Identifiant de l'oeuvre*</label>
+        <input type="integer" class="form-control" name="ajout_book_id" placeholder="ID de l'oeuvre"/>
     </div>
     <div class="mb-3">
       <label for="ajout_book_nom" class="form-label">Nom de l'oeuvre*</label>
         <input type="text" class="form-control" name="ajout_book_nom" placeholder="Nom de l'oeuvre"/>
     </div>
     <div class="mb-3">
-      <label for="ajout_book_date" class="form-label">Date de publication de l'oeuvre*</label>
-        <input type="text" class="form-control" name="ajout_book_date" placeholder="Date de l'oeuvre"/>
+      <label for="ajout_book_date" class="form-label">Année de publication de l'oeuvre*</label>
+        <input type="integer" class="form-control" name="ajout_book_date" placeholder="Date de l'oeuvre"/>
     </div>
     <div class="mb-3">
         <label for="ajout_book_type" class="form-label">Genre littéraire de l'oeuvre*</label>
           <select name="ajout_book_type" id="ajout_book_type">
-                <option value="récit_autobiographique">Récit autobiographique</option>
-                <option value="roman">Roman</option>
-                <option value="théâtre>Théâtre</option>
-                <option value="essai_philosophique">Essai philosophique</option>
-                <option value="recueil_de_nouvelles">Recueil de nouvelles</option>
-                <option value="autre">Autre</option>
+                <option value="Récit autobiographique">Récit autobiographique</option>
+                <option value="Roman">Roman</option>
+                <option value="Théâtre">Théâtre</option>
+                <option value="Essai philosophique">Essai philosophique</option>
+                <option value="Recueil de nouvelles">Recueil de nouvelles</option>
+                <option value="Autre">Autre</option>
             </select>
     </div>
     <div class="mn-3">
