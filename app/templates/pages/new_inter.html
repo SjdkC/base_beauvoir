@@ -1,0 +1,44 @@
+{% extends "conteneur.html" %}
+
+{% block corps %}
+
+<div>
+    <h1>Ajouter une mention intertextuelle à la base de données</h1>
+</div>
+<form class="form" method="POST" action="{{url_for('new_inter')}}">
+    <br/>
+    <div class="mb-3">
+      <label for="ajout_mentions_id" class="form-label">Identifiant de la mention*</label>
+        <input type="integer" class="form-control" name="ajout_mentions_id" placeholder="ID de la mention"/>
+        Vous devriez utiliser l'ID immédiatement supérieure à celui de la dernière mention ajoutée.
+        La dernière oeuvre ajoutée est {{last_id_mentions}} (désolée pour cette solution de fortune).
+    </div>
+    <div class="mb-3">
+      <label for="ajout_mentions_book_id" class="form-label">Identifiant de l'oeuvre contenant la mention intertextuelle*</label>
+        <input type="text" class="form-control" name="ajout_mentions_book_id"
+               placeholder="Identifiant de l'oeuvre"/>
+    </div>
+    <div class="mb-3">
+      <label for="ajout_is_mentioned_book_id" class="form-label">Identifiant de l'oeuvre référencée par cette mention*</label>
+        <input type="integer" class="form-control" name="ajout_is_mentioned_book_id"
+               placeholder="Identifiant de l'oeuvre"/>
+    </div>
+    <div class="mn-3">
+      <label for="ajout_mentions_chapter" class="form-label">Indication de partie ou de chapitre</label>
+        <input type="text" class="form-control" name="ajout_mentions_chapter" placeholder="Partie, chapitre..."/>
+    </div>
+    <br/>
+    * Champs obligatoires.
+		<br/>
+		<br/>
+		  <input type="submit" name="Créer" class="btn btn-primary" />
+</form>
+
+<br/>
+
+
+<p class="text-center">
+<p><a href="{{url_for('accueil')}}">Retour à l'accueil</a></p>
+</p>
+
+{% endblock %}

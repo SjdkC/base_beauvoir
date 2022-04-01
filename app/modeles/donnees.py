@@ -39,7 +39,7 @@ class Book(db.Model):
     is_mentioned = db.relationship("Mentions", back_populates="book_is_mentioned",
                                    foreign_keys="Mentions.is_mentioned_book_id")
 
-    # Méthode statique qui permet d'ajouter une amende à la BDD. Elle est appelée dans la route correspondante.
+    # Méthode statique permettant l'ajout d'une oeuvre à la BDD
 
     @staticmethod
     def ajout_book(ajout_book_id, ajout_book_nom, ajout_book_date, ajout_book_type,
@@ -54,9 +54,6 @@ class Book(db.Model):
         if not ajout_book_date:
             erreurs.append(
                 "Veuillez renseigner la date de publication de cette oeuvre.")
-        if len(ajout_book_date) != 4:
-            erreurs.append(
-                "Bon...")
         if not ajout_book_type:
             erreurs.append(
                 "Veuillez renseigner le genre littéraire de cette oeuvre.")
@@ -82,7 +79,7 @@ class Book(db.Model):
             return False, [str(erreur)]
 
 
-    # Méthode statique permettant de supprimer une oeuvre
+    # Méthode statique permettant la suppression d'une oeuvre
     @staticmethod
     def supprimer_book(book_id):
 
@@ -132,6 +129,40 @@ class Mentions(db.Model):
                                     primaryjoin="Mentions.mentions_book_id == Book.book_id")
     book_is_mentioned = db.relationship("Book", back_populates="is_mentioned",
                                         primaryjoin="Mentions.is_mentioned_book_id == Book.book_id")
+
+    # Méthode statique qui permet d'ajouter une mention d'intertextualité à la BDD
+
+    @staticmethod
+    def ajout_mentions(ajout_mentions_id, ajout_mentions_book_id, ajout_is_mentioned_book_id, ajout_mentions_chapter):
+        erreurs_mentions = []
+        if not ajout_mentions_id:
+            erreurs_mentions.append(
+                "Veuillez renseigner l'ID de cette relation intertextuelle.")
+        if not ajout_mentions_book_id:
+            erreurs_mentions.append(
+                "Veuillez renseigner l'oeuvre qui contient la mention intertextuelle.")
+        if not ajout_is_mentioned_book_id:
+            erreurs_mentions.append(
+                "Veuillez renseigner l'oeuvre qui est référencée par cette mention intertextuelle.")
+
+            # S'il y a au moins une erreur, afficher un message d'erreur.
+        if len(erreurs_mentions) > 0:
+            return False, erreurs_mentions
+
+            # Création de la nouvelle oeuvre
+        nouvelle_mention = Mentions(mentions_id=ajout_mentions_id,
+                               mentions_book_id=ajout_mentions_book_id,
+                               is_mentioned_book_id=ajout_is_mentioned_book_id,
+                               mentions_chapter=ajout_mentions_chapter)
+
+        # Tentative d'ajout qui sera stoppée si une erreur apparaît.
+        try:
+            db.session.add(nouvelle_mention)
+            db.session.commit()
+            return True, nouvelle_mention
+
+        except Exception as erreur_mentions:
+            return False, [str(erreur_mentions)]
 
 class Writer(db.Model):
     writer_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)

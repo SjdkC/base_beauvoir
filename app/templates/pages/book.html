@@ -19,6 +19,7 @@
         <br/><br/>
         {% endif %}
         <dl>
+            <dt>Identifiant de l'oeuvre</dt><dd>{{livre.book_id}}</dd>
             <dt>Date de publication</dt><dd>{{livre.book_date}}</dd>
             <dt>Type</dt><dd>{{livre.book_type}}</dd>
             <dt>Description</dt><dd>{{livre.book_description}}</dd>
@@ -27,7 +28,8 @@
             <dd>
                 <ul>
                     {% for lien in livre.book_mentions %}
-                        <li>Mentionne l'oeuvre <a href="{{url_for('livre', book_id=lien.book_is_mentioned.book_id)}}">{{lien.book_is_mentioned.book_nom}}</a> ({{lien.mentions_chapter}})</li>
+                        <li>Mentionne l'oeuvre <a href="{{url_for('livre', book_id=lien.book_is_mentioned.book_id)}}">{{lien.book_is_mentioned.book_nom}}</a>
+                            {% if lien.mentions_chapter %} ({{lien.mentions_chapter}}){% endif %}</li>
                     {% endfor%}
                </ul>
             </dd>

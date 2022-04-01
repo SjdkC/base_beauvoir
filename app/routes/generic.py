@@ -27,12 +27,10 @@ def livre(book_id):
 
     :param book_id: Identifiant numérique de l'oeuvre
     """
-    intertextualite = Mentions.query.get(book_id)
     unique_livre = Book.query.get(book_id)
     return render_template("pages/book.html",
                            nom="Base Beauvoir",
-                           livre=unique_livre,
-                           intertextualite=intertextualite)
+                           livre=unique_livre)
 
 @app.route("/book/<int:book_id>/update", methods=["GET", "POST"])
 @login_required
@@ -54,7 +52,6 @@ def book_update(book_id):
             erreurs.append("Veuillez renseigner le nom de l'oeuvre.")
         if not request.form.get("book_date", "").strip():
             erreurs.append("Veuillez renseigner la date de l'oeuvre.")
-
         if not request.form.get("type_nom", "").strip():
             erreurs.append("Veuillez renseigner le genre de l'oeuvre.")
         elif not Type.query.get(request.form["type_nom"]):
@@ -262,6 +259,27 @@ def new_book():
             return render_template("pages/new_book.html")
     else:
         return render_template("pages/new_book.html", last_id=last_id)
+
+@app.route("/new_inter", methods=["GET", "POST"])
+@login_required
+def new_inter():
+    descending = Mentions.query.order_by(Mentions.mentions_id.desc())
+    last_id_mentions = descending.first()
+    if request.method == "POST":
+        statut, informations = Mentions.ajout_mentions(
+            ajout_mentions_id = request.form.get("ajout_mentions_id", None),
+            ajout_mentions_book_id = request.form.get("ajout_mentions_book_id", None),
+            ajout_is_mentioned_book_id = request.form.get("ajout_is_mentioned_book_id", None),
+            ajout_mentions_chapter= request.form.get("ajout_mentions_chapter", None))
+
+        if statut is True:
+            flash("La mention intertextuelle a bien été ajoutée à la base de données !", "success")
+            return redirect("/")
+        else:
+            flash("L'ajout a échoué pour les raisons suivantes : " + " ".join(informations), "danger")
+            return render_template("pages/new_inter.html")
+    else:
+        return render_template("pages/new_inter.html", last_id_mentions=last_id_mentions)
 
 @app.route("/suppress_book/<int:book_id>", methods=["POST", "GET"])
 @login_required

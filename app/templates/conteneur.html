@@ -37,11 +37,14 @@
               </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for("new_book")}}">Contribuer</a>
+                <a class="nav-link" href="{{url_for("new_book")}}">Nouvelle oeuvre</a>
             </li>
-              <li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for("new_inter")}}">Nouvelle mention</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{url_for("deconnexion")}}">Déconnexion ({{current_user.user_nom}})</a>
-              </li>
+            </li>
             {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for("browse_api")}}">API</a>
