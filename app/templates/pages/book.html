@@ -22,6 +22,28 @@
             <dt>Date de publication</dt><dd>{{livre.book_date}}</dd>
             <dt>Type</dt><dd>{{livre.book_type}}</dd>
             <dt>Description</dt><dd>{{livre.book_description}}</dd>
+            <dt>Intertextualité</dt>
+                    {% if livre.book_mentions %}
+            <dd>
+                <ul>
+                    {% for lien in livre.book_mentions %}
+                        <li>Mentionne l'oeuvre <a href="{{url_for('livre', book_id=lien.book_is_mentioned.book_id)}}">{{lien.book_is_mentioned.book_nom}}</a> ({{lien.mentions_chapter}})</li>
+                    {% endfor%}
+               </ul>
+            </dd>
+                    {% elif livre.is_mentioned %}
+
+                    <dd>
+                <ul>
+                    {% for truc in livre.is_mentioned %}
+                        <li>Est mentionné dans l'oeuvre <a href="{{url_for('livre', book_id=truc.book_mentions.book_id)}}">{{truc.book_mentions.book_nom}}</a> ({{truc.mentions_chapter}})</li>
+                    {% endfor%}
+                </ul>
+                        </dd>
+            {% else %}
+            Cette oeuvre n'a pas de liens intertextuels enregistrés.
+            <br/>
+            {% endif %}
             <br/>
             <dt>Historique des modifications</dt>
             {% if livre.authorships %}

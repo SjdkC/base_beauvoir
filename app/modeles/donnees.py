@@ -21,8 +21,6 @@ class Authorship(db.Model):
             "on": self.authorship_date
         }
 
-
-
 class Type(db.Model):
     type_nom = db.Column(db.Text, unique=True, nullable=False, primary_key=True)
     boook = db.relationship("Book", back_populates="has_type")
@@ -36,6 +34,10 @@ class Book(db.Model):
     book_description = db.Column(db.Text)
     authorships = db.relationship("Authorship", back_populates="book")
     has_type = db.relationship("Type", back_populates="boook")
+    book_mentions = db.relationship("Mentions", back_populates="book_mentions",
+                               foreign_keys="Mentions.mentions_book_id")
+    is_mentioned = db.relationship("Mentions", back_populates="book_is_mentioned",
+                                   foreign_keys="Mentions.is_mentioned_book_id")
 
     # Méthode statique qui permet d'ajouter une amende à la BDD. Elle est appelée dans la route correspondante.
 
@@ -43,6 +45,9 @@ class Book(db.Model):
     def ajout_book(ajout_book_id, ajout_book_nom, ajout_book_date, ajout_book_type,
                      ajout_book_description):
         erreurs = []
+        if not ajout_book_id:
+            erreurs.append(
+                "Veuillez renseigner l'ID de cette oeuvre.")
         if not ajout_book_nom:
             erreurs.append(
                 "Veuillez renseigner le nom de cette oeuvre.")
@@ -117,6 +122,16 @@ class Book(db.Model):
                  ]
             }
         }
+
+class Mentions(db.Model):
+    mentions_id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
+    mentions_book_id = db.Column(db.Integer, db.ForeignKey('book.book_id'))
+    is_mentioned_book_id = db.Column(db.Integer, db.ForeignKey('book.book_id'))
+    mentions_chapter = db.Column(db.Text)
+    book_mentions = db.relationship("Book", back_populates="book_mentions",
+                                    primaryjoin="Mentions.mentions_book_id == Book.book_id")
+    book_is_mentioned = db.relationship("Book", back_populates="is_mentioned",
+                                        primaryjoin="Mentions.is_mentioned_book_id == Book.book_id")
 
 class Writer(db.Model):
     writer_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)

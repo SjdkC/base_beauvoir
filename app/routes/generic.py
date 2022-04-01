@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from ..app import app, login, db
 from ..constantes import LIVRES_PAR_PAGE
-from ..modeles.donnees import Book, Authorship, Type, Writer
+from ..modeles.donnees import Book, Authorship, Type, Writer, Mentions
 from ..modeles.utilisateurs import User
 
 @app.route("/")
@@ -20,15 +20,19 @@ def simone_de_beauvoir():
     simone_de_beauvoir = Writer.query.get(0)
     return render_template("pages/simone_de_beauvoir.html", nom="Base Beauvoir", auteur=simone_de_beauvoir)
 
+
 @app.route("/book/<int:book_id>")
 def livre(book_id):
     """ Route permettant l'affichage des données d'une oeuvre
 
     :param book_id: Identifiant numérique de l'oeuvre
     """
+    intertextualite = Mentions.query.get(book_id)
     unique_livre = Book.query.get(book_id)
-    return render_template("pages/book.html", nom="Base Beauvoir", livre=unique_livre)
-
+    return render_template("pages/book.html",
+                           nom="Base Beauvoir",
+                           livre=unique_livre,
+                           intertextualite=intertextualite)
 
 @app.route("/book/<int:book_id>/update", methods=["GET", "POST"])
 @login_required
@@ -239,6 +243,8 @@ def deconnexion():
 @app.route("/new_book", methods=["GET", "POST"])
 @login_required
 def new_book():
+    descending = Book.query.order_by(Book.book_id.desc())
+    last_id = descending.first()
     if request.method == "POST":
         statut, informations = Book.ajout_book(
             ajout_book_id = request.form.get("ajout_book_id", None),
@@ -255,7 +261,7 @@ def new_book():
             flash("L'ajout a échoué pour les raisons suivantes : " + " ".join(informations), "danger")
             return render_template("pages/new_book.html")
     else:
-        return render_template("pages/new_book.html")
+        return render_template("pages/new_book.html", last_id=last_id)
 
 @app.route("/suppress_book/<int:book_id>", methods=["POST", "GET"])
 @login_required
