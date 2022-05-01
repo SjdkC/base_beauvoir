@@ -22,14 +22,18 @@
             <dt>Identifiant de l'oeuvre</dt><dd>{{livre.book_id}}</dd>
             <dt>Date de publication</dt><dd>{{livre.book_date}}</dd>
             <dt>Type</dt><dd>{{livre.book_type}}</dd>
+            {% if livre.book_description %}
             <dt>Description</dt><dd>{{livre.book_description}}</dd>
+            {% endif %}
+            <br/>
             <dt>Intertextualité</dt>
                     {% if livre.book_mentions %}
             <dd>
                 <ul>
                     {% for lien in livre.book_mentions %}
                         <li>Mentionne l'oeuvre <a href="{{url_for('livre', book_id=lien.book_is_mentioned.book_id)}}">{{lien.book_is_mentioned.book_nom}}</a>
-                            {% if lien.mentions_chapter %} ({{lien.mentions_chapter}}){% endif %}</li>
+                            {% if lien.mentions_chapter %} ({{lien.mentions_chapter}} {% if lien.mentions_comment %} : {{lien.mentions_comment}} {% endif %}){% endif %}.
+                        <a href="{{url_for('suppress_inter', mentions_id=lien.mentions_id)}}">Supprimer</a></li>
                     {% endfor%}
                </ul>
             </dd>
@@ -38,7 +42,9 @@
                     <dd>
                 <ul>
                     {% for truc in livre.is_mentioned %}
-                        <li>Est mentionné dans l'oeuvre <a href="{{url_for('livre', book_id=truc.book_mentions.book_id)}}">{{truc.book_mentions.book_nom}}</a> ({{truc.mentions_chapter}})</li>
+                        <li>Est mentionnée dans l'oeuvre <a href="{{url_for('livre', book_id=truc.book_mentions.book_id)}}">{{truc.book_mentions.book_nom}}</a>
+                            {% if truc.mentions_chapter %} ({{truc.mentions_chapter}} {% if truc.mentions_comment %} : {{truc.mentions_comment}} {% endif %}){% endif %}.
+                            <a href="{{url_for('suppress_inter', mentions_id=truc.mentions_id)}}">Supprimer</a></li>
                     {% endfor%}
                 </ul>
                         </dd>

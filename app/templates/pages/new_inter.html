@@ -7,12 +7,9 @@
 </div>
 <form class="form" method="POST" action="{{url_for('new_inter')}}">
     <br/>
-    <div class="mb-3">
-      <label for="ajout_mentions_id" class="form-label">Identifiant de la mention*</label>
-        <input type="integer" class="form-control" name="ajout_mentions_id" placeholder="ID de la mention"/>
-        Vous devriez utiliser l'ID immédiatement supérieure à celui de la dernière mention ajoutée.
-        La dernière oeuvre ajoutée est {{last_id_mentions}} (désolée pour cette solution de fortune).
-    </div>
+    Les identifiants peuvent être trouvés dans les <b>notices d'oeuvres</b>.
+    <br/>
+    <br/>
     <div class="mb-3">
       <label for="ajout_mentions_book_id" class="form-label">Identifiant de l'oeuvre contenant la mention intertextuelle*</label>
         <input type="text" class="form-control" name="ajout_mentions_book_id"
@@ -26,6 +23,10 @@
     <div class="mn-3">
       <label for="ajout_mentions_chapter" class="form-label">Indication de partie ou de chapitre</label>
         <input type="text" class="form-control" name="ajout_mentions_chapter" placeholder="Partie, chapitre..."/>
+    </div>
+    <div class="mn-3">
+      <label for="ajout_mentions_chapter" class="form-label">Commentaires</label>
+        <input type="text" class="form-control" name="ajout_mentions_comments" placeholder="Commentaires"/>
     </div>
     <br/>
     * Champs obligatoires.

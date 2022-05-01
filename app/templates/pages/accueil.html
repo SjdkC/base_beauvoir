@@ -4,9 +4,28 @@
 {%endblock%}
 {% block corps %}
 <h1>Bienvenue !</h1>
-    <p>
+    <div>
+        <p> La Base Beauvoir est une application développée par <a href="https://github.com/SjdkC">Cécile Sajdak</a>
+    dans le cadre du cours Python du master TNAH de l'Ecole nationale des chartes (2021-2022).</p>
+        <p>Cette application vise à répertorier les liens intertextuels présents au sein de l'oeuvre
+    de Simone de Beauvoir. L'application se concentre en particulier sur les liens qui existent entre l'oeuvre autobiographique de Simone de Beauvoir
+        et ses autres ouvrages. Le but est ainsi de répertorier et de faciliter l'accès aux explications fournies par
+            l'autrice elle-même concernant ses processus créatifs et intellectuels, la réception de ses oeuvres, mais aussi de permettre une mise en
+            contexte de sa production littéraire.</p>
+        <p> Sur la notice de chaque oeuvre, il est possible de consulter la liste des ouvrages
+    avec lesquels elle présente un lien intertextuel, accompagnée d'informations qui permettent de remonter vers les passages concernés.</p>
         {% if livres %}
-        <p>Les {{ livres|length }} dernières oeuvres enregistrées sont :</p>
+            <p>
+                L'application répertorie pour le moment {% if mentions %} {{mentions|length}}
+                mentions intertextuelles et{% endif %} {{ livres_all|length }} oeuvres.
+            </p>
+            {% endif %}
+        <p> L'utilisateur peut ajouter, modifier et supprimer de nouvelles oeuvres, de même qu'ajouter
+            et de supprimer de nouvelles mentions intertextuelles.
+        </p>
+        {% if livres %}
+        <p>
+            <br/><b>Les {{ livres|length }} dernières oeuvres enregistrées sont :</b></p>
             <ul>
                 {% for livre in livres %}
                 <li><a href="{{url_for('livre', book_id=livre.book_id)}}">{{livre.book_nom}}</a></li>
@@ -16,4 +35,5 @@
         La base de données est en cours de constitution
         {% endif %}
         </p>
+    </div>
 {% endblock %}

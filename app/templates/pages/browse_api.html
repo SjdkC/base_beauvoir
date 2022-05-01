@@ -10,7 +10,7 @@
         plein texte, afin d'obtenir un résultat au format JSON. Les résultats sont paginés : utilisez les liens contenus dans la clé "links" pour naviguer entre les pages.</p>
 <br/>
 
-          <h2>Recherche plein texte dans les titres d'oeuvres</h2>
+          <b>Recherche plein texte dans les titres d'oeuvres</b>
     <form class="form" method="GET" action="{{url_for('api_books_browse')}}">
         <input type="search" name="q" class="form-control" type="text">
         <button type="submit" class="btn btn-primary">Rechercher</button>
@@ -18,7 +18,7 @@
 
 <br/>
 
-        <h2>Recherche plein texte dans les descriptions d'oeuvres</h2>
+        <b>Recherche plein texte dans les descriptions d'oeuvres</b>
     <form class="form" method="GET" action="{{url_for('api_description_browse')}}">
         <input type="search" name="q" class="form-control" type="text">
         <button type="submit" class="btn btn-primary">Rechercher</button>

@@ -1,9 +1,9 @@
 {% extends "conteneur.html" %}
 
 {% block corps %}
-<h1 class="text-center">Suppression de l'oeuvre {{suppr_book.book_nom}} ?</h1>
+<h1 class="text-center">Suppression de la mention intertextuelle ?</h1>
 
-<form method="POST" action="{{url_for('suppress_book', book_id=suppr_book.book_id)}}">
+<form method="POST" action="{{url_for('suppress_inter', mentions_id=suppr_inter.mentions_id)}}">
 <p class="text-center">
 	<input type="submit" name="Confirmer" class="btn btn-info">
 <button type="button" class="btn btn-danger">

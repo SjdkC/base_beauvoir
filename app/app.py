@@ -4,6 +4,7 @@ from flask_login import LoginManager
 import os
 from .constantes import SECRET_KEY
 
+# Stockage des chemins : chemin courant, chemin vers les templates, chemin vers les statics
 chemin_actuel = os.path.dirname(os.path.abspath(__file__))
 templates = os.path.join(chemin_actuel, "templates")
 statics = os.path.join(chemin_actuel, "static")

@@ -21,11 +21,12 @@ class Authorship(db.Model):
             "on": self.authorship_date
         }
 
+# Modèle pour la table des genres littéraires/types
 class Type(db.Model):
     type_nom = db.Column(db.Text, unique=True, nullable=False, primary_key=True)
     boook = db.relationship("Book", back_populates="has_type")
 
-# On crée notre modèle
+# Modèle pour la table des oeuvres/livres
 class Book(db.Model):
     book_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     book_nom = db.Column(db.Text, nullable=False)
@@ -42,12 +43,9 @@ class Book(db.Model):
     # Méthode statique permettant l'ajout d'une oeuvre à la BDD
 
     @staticmethod
-    def ajout_book(ajout_book_id, ajout_book_nom, ajout_book_date, ajout_book_type,
+    def ajout_book(ajout_book_nom, ajout_book_date, ajout_book_type,
                      ajout_book_description):
         erreurs = []
-        if not ajout_book_id:
-            erreurs.append(
-                "Veuillez renseigner l'ID de cette oeuvre.")
         if not ajout_book_nom:
             erreurs.append(
                 "Veuillez renseigner le nom de cette oeuvre.")
@@ -63,8 +61,7 @@ class Book(db.Model):
             return False, erreurs
 
             # Création de la nouvelle oeuvre
-        nouvelle_oeuvre = Book(book_id=ajout_book_id,
-                                  book_nom=ajout_book_nom,
+        nouvelle_oeuvre = Book(book_nom=ajout_book_nom,
                                   book_date=ajout_book_date,
                                   book_type=ajout_book_type,
                                   book_description=ajout_book_description)
@@ -120,24 +117,23 @@ class Book(db.Model):
             }
         }
 
+# Modèle pour la table des mentions intertextuelle
 class Mentions(db.Model):
     mentions_id = db.Column(db.Integer, nullable=False, autoincrement=True, primary_key=True)
     mentions_book_id = db.Column(db.Integer, db.ForeignKey('book.book_id'))
     is_mentioned_book_id = db.Column(db.Integer, db.ForeignKey('book.book_id'))
     mentions_chapter = db.Column(db.Text)
+    mentions_comment = db.Column(db.Text)
     book_mentions = db.relationship("Book", back_populates="book_mentions",
                                     primaryjoin="Mentions.mentions_book_id == Book.book_id")
     book_is_mentioned = db.relationship("Book", back_populates="is_mentioned",
                                         primaryjoin="Mentions.is_mentioned_book_id == Book.book_id")
 
-    # Méthode statique qui permet d'ajouter une mention d'intertextualité à la BDD
-
+    # Méthode statique qui permet d'ajouter une mention intertextuelle à la BDD
     @staticmethod
-    def ajout_mentions(ajout_mentions_id, ajout_mentions_book_id, ajout_is_mentioned_book_id, ajout_mentions_chapter):
+    def ajout_mentions(ajout_mentions_book_id, ajout_is_mentioned_book_id, ajout_mentions_chapter,
+                       ajout_mentions_comment):
         erreurs_mentions = []
-        if not ajout_mentions_id:
-            erreurs_mentions.append(
-                "Veuillez renseigner l'ID de cette relation intertextuelle.")
         if not ajout_mentions_book_id:
             erreurs_mentions.append(
                 "Veuillez renseigner l'oeuvre qui contient la mention intertextuelle.")
@@ -150,10 +146,10 @@ class Mentions(db.Model):
             return False, erreurs_mentions
 
             # Création de la nouvelle oeuvre
-        nouvelle_mention = Mentions(mentions_id=ajout_mentions_id,
-                               mentions_book_id=ajout_mentions_book_id,
+        nouvelle_mention = Mentions(mentions_book_id=ajout_mentions_book_id,
                                is_mentioned_book_id=ajout_is_mentioned_book_id,
-                               mentions_chapter=ajout_mentions_chapter)
+                               mentions_chapter=ajout_mentions_chapter,
+                               mentions_comment=ajout_mentions_comment)
 
         # Tentative d'ajout qui sera stoppée si une erreur apparaît.
         try:
@@ -164,6 +160,23 @@ class Mentions(db.Model):
         except Exception as erreur_mentions:
             return False, [str(erreur_mentions)]
 
+    # Méthode statique permettant la suppression d'une mention intertextuelle
+    @staticmethod
+    def supprimer_inter(mentions_id):
+
+        suppr_inter = Mentions.query.get(mentions_id)
+
+        try:
+            db.session.delete(suppr_inter)
+            db.session.commit()
+            return True
+
+        except Exception as erreur:
+            return False, [str(erreur)]
+
+# Modèle pour la table des auteur.rices
+# Elle ne comprend pour le moment que Simone de Beauvoir, mais le modèle pourrait tre adapté
+# (par la création d'une table de relation) pour inclure d'autres auteurs
 class Writer(db.Model):
     writer_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     writer_nom = db.Column(db.Text, nullable=False)
@@ -174,6 +187,7 @@ class Writer(db.Model):
     writer_description = db.Column(db.Text)
     authorships = db.relationship("Authorship", back_populates="writer")
 
+    # prépare le format JSON pour l'API
     def writer_to_jsonapi(self):
         """ It ressembles a little JSON API format but it is not completely compatible
 

@@ -10,7 +10,7 @@
         <dl>
             <dt>Date de naissance</dt><dd>{{auteur.writer_naissance}}</dd>
             <dt>Date de mort</dt><dd>{{auteur.writer_mort}}</dd>
-            <dt>URI</dt><dd>{{auteur.writer_sameas}}</dd>
+            <dt>Voir aussi</dt><dd><a href="{{auteur.writer_sameas}}">Notice BnF</a></dd>
             <dt>Description</dt><dd>{{auteur.writer_description}}</dd>
             {% if current_user.is_authenticated %}
         <a href="{{url_for("simone_de_beauvoir_update")}}">Modifier la description</a>
