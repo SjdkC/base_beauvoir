@@ -99,7 +99,7 @@ def simone_de_beauvoir_update():
     """ Route permettant la modification des données de la page Simone de Beauvoir
     """
 
-    mon_autrice = Writer.query.get_or_404(0)
+    mon_autrice = Writer.query.get_or_404(1)
 
     erreurs = []
     updated = False
