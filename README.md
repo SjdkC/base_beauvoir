@@ -39,6 +39,5 @@ données au format JSON.
 - Créer un environnement virtuel : `virtualenv -p python3 env`
 - Activer l'environnement virtuel : `source env/bin/activate`
 - Installer les librairies requises : `pip install -r requirements.txt`
-- Lancer l'application : `python3 run.py`, puis cliquer sur le lien
-(ou ouvrir http://127.0.0.1:5000/ dans un navigateur (Firefox recommandé))
+- Lancer l'application : `python3 run.py` puis se rendre à l'adresse http://127.0.0.1:5000/ depuis un navigateur (Firefox recommandé))
 
