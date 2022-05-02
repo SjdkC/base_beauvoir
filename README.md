@@ -1,11 +1,10 @@
 # Base Beauvoir
 
 Cette application a été développée par Cécile Sajdak 
-dans le cadre du cours de Python dispensé dans le
-cadre du Master 2 TNAH de l'Ecole nationale des chartes 
+dans le cadre du cours de Python du du Master 2 TNAH de l'Ecole nationale des chartes 
 ([consignes du devoir](https://github.com/PonteIneptique/cours-python/wiki/2021-2022-Devoir)).
 
-Cette application s'appuie sur le framework Flask.
+Elle s'appuie sur le framework Flask.
 
 
 ## Objectifs

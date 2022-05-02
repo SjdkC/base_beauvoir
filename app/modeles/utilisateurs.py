@@ -3,6 +3,7 @@ from flask_login import UserMixin
 
 from .. app import db, login
 
+# Modèle pour la table des utilisateurs
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     user_nom = db.Column(db.Text, nullable=False)
@@ -11,6 +12,7 @@ class User(UserMixin, db.Model):
     user_password = db.Column(db.String(100), nullable=False)
     authorships = db.relationship("Authorship", back_populates="user")
 
+    # Méthode statique permettant l'identification
     @staticmethod
     def identification(login, motdepasse):
         """ Identifie un utilisateur. Si cela fonctionne, renvoie les données de l'utilisateurs.
@@ -25,6 +27,7 @@ class User(UserMixin, db.Model):
             return utilisateur
         return None
 
+    # Méthode statique permettant l'inscription	
     @staticmethod
     def creer(login, email, nom, motdepasse):
         """ Crée un compte utilisateur-rice. Retourne un tuple (booléen, User ou liste).
@@ -95,7 +98,6 @@ class User(UserMixin, db.Model):
     def to_jsonapi_dict(self):
         """ It ressembles a little JSON API format but it is not completely compatible
 
-        :return:
         """
         return {
             "type": "people",

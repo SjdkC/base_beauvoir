@@ -175,9 +175,11 @@ def browse():
         resultats=resultats
     )
 
-#Route donnant accès à la page de navigation dans l'API.
 @app.route("/browse_api")
 def browse_api():
+    """ Route permettant d'accéder à la page de navigation de l'API
+
+    """
 
     page = request.args.get("page", 1)
 
@@ -245,19 +247,25 @@ def connexion():
     return render_template("pages/connexion.html")
 login.login_view = 'connexion'
 
-# Route gérant la déconnexion
+
 @app.route("/deconnexion", methods=["POST", "GET"])
 def deconnexion():
+    """ Route gérant les déconnexions
+
+    """
     if current_user.is_authenticated is True:
         logout_user()
     flash("Vous êtes déconnecté-e.", "info")
     return redirect("/")
 
-# Route gérant la saisie d'une nouvelle oeuvre et son inscription en base
+
 @app.route("/new_book", methods=["GET", "POST"])
 # Pour y accéder, il faut être connecté
 @login_required
 def new_book():
+    """ Route gérant la saisie d'une nouvelle oeuvre et son inscription en base
+
+    """
     descending = Book.query.order_by(Book.book_id.desc())
     last_id = descending.first()
     if request.method == "POST":
@@ -278,11 +286,14 @@ def new_book():
     else:
         return render_template("pages/new_book.html", last_id=last_id)
 
-# Route gérant la saisie d'une nouvelle mention intertextuelle et son inscription en base
+
 @app.route("/new_inter", methods=["GET", "POST"])
 # Il est nécessaire d'être connecté
 @login_required
 def new_inter():
+    """ Route gérant la saisie d'une nouvelle mention intertextuelle et son inscription en base
+
+    """
     descending = Mentions.query.order_by(Mentions.mentions_id.desc())
     last_id_mentions = descending.first()
     if request.method == "POST":
@@ -302,10 +313,14 @@ def new_inter():
     else:
         return render_template("pages/new_inter.html", last_id_mentions=last_id_mentions)
 
-# Route gérant la suppression d'une oeuvre
+
 @app.route("/suppress_book/<int:book_id>", methods=["POST", "GET"])
 @login_required
 def suppress_book(book_id):
+    """ Route gérant la suppression d'une oeuvre
+
+    :param book_id: Identifiant numérique de l'oeuvre
+    """
 
     suppr_book = Book.query.get(book_id)
 
@@ -323,10 +338,14 @@ def suppress_book(book_id):
     else:
         return render_template("pages/suppress_book.html", suppr_book=suppr_book)
 
-# Route gérant la suppression d'une mention intertextuelle
+
 @app.route("/suppress_inter/<int:mentions_id>", methods=["POST", "GET"])
 @login_required
 def suppress_inter(mentions_id):
+    """ Route permettant la suppression d'une mention intertextuelle
+
+    :param book_id: Identifiant numérique de la mention
+    """
 
     suppr_inter = Mentions.query.get(mentions_id)
 

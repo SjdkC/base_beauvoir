@@ -14,6 +14,10 @@ def Json_404():
 
 @app.route(API_ROUTE+"/books/<book_id>")
 def api_books_single(book_id):
+    """ Route permettant de récupérer les données d'une oeuvre
+    :param book_id: Identifiant numérique de l'oeuvre
+    On s'inspirera de http://jsonapi.org/ faute de pouvoir trouver temps d'y coller à 100%
+    """
     try:
         query = Book.query.get(book_id)
         return jsonify(query.to_jsonapi_dict())
