@@ -1,6 +1,6 @@
 # Base Beauvoir
 
-Cette application a été développée par Cécile Sajdak 
+Cette application a été développée
 dans le cadre du cours de Python du du Master 2 TNAH de l'Ecole nationale des chartes 
 ([consignes du devoir](https://github.com/PonteIneptique/cours-python/wiki/2021-2022-Devoir)).
 
